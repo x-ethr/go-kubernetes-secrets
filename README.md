@@ -11,8 +11,6 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: ethr
-  namespace: development
-immutable: false
 data:
     host: ZXhhbXBsZS5ldGhyLmdnCg==
     port: ODA4MAo=
