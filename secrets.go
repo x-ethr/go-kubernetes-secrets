@@ -17,11 +17,11 @@ type Secret string
 // Key represents a kubernetes secret's key. On a pod's filesystem, [Key] represents a file's name.
 type Key string
 
-// Value represents a kubernetes secret's value. On a pod's filesystem, [Value] represents the [Key] file's binary contents.
-type Value []byte
+// Value represents a kubernetes secret's value. On a pod's filesystem, [Value] represents the [Key] file's contents.
+type Value string
 
-func (v Value) String() string {
-	return string(v)
+func (v Value) Bytes() []byte {
+	return []byte(v)
 }
 
 // Secrets represents a map[string]map[string][]byte mapping of [Secret] -> [Key] -> [Value].
@@ -53,7 +53,7 @@ func (s Secrets) Walk(ctx context.Context, directory string) error {
 				return exception
 			}
 
-			s[secret][key] = value
+			s[secret][key] = Value(value)
 		}
 
 		return nil
@@ -93,7 +93,7 @@ func (s Secrets) FS(ctx context.Context, filesystem fs.FS) error {
 				return exception
 			}
 
-			s[secret][key] = value
+			s[secret][key] = Value(value)
 		}
 
 		return nil
