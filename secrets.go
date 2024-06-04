@@ -11,14 +11,20 @@ import (
 	"github.com/x-ethr/levels"
 )
 
-type Secret string // Secret represents the kubernetes secret. On a pod's filesystem, [Secret] value represents the directory where the volume was mounted.
-type Key string    // Key represents a kubernetes secret's key. On a pod's filesystem, [Key] represents a file's name.
+// Secret represents the kubernetes secret. On a pod's filesystem, [Secret] value represents the directory where the volume was mounted.
+type Secret string
 
-type Value []byte // Value represents a kubernetes secret's value. On a pod's filesystem, [Value] represents the [Key] file's binary contents.
+// Key represents a kubernetes secret's key. On a pod's filesystem, [Key] represents a file's name.
+type Key string
+
+// Value represents a kubernetes secret's value. On a pod's filesystem, [Value] represents the [Key] file's binary contents.
+type Value []byte
+
 func (v Value) String() string {
 	return string(v)
 }
 
+// Secrets represents a map[string]map[string][]byte mapping of [Secret] -> [Key] -> [Value].
 type Secrets map[Secret]map[Key]Value
 
 func (s Secrets) Walk(ctx context.Context, directory string) error {
@@ -103,4 +109,10 @@ func (s Secrets) FS(ctx context.Context, filesystem fs.FS) error {
 
 func New() Secrets {
 	return make(Secrets)
+}
+
+func Walk(ctx context.Context, directory string) (Secrets, error) {
+	instance := New()
+	e := instance.Walk(ctx, directory)
+	return instance, e
 }
