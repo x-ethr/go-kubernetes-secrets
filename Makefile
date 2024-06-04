@@ -65,7 +65,7 @@ dirty-contents 			= $(shell git diff --shortstat 2>/dev/null 2>/dev/null | tail 
 # Package-Specific Target(s)
 # ------------------------------------------------------------------------------------
 
-all :: patch-release update
+all :: patch-release
 
 tidy:
 	@go mod tidy
@@ -97,7 +97,7 @@ commit-patch: bump-patch
 	@git push origin "v$(version)"
 	@echo "$(green-bold)Published Tag$(reset): $(version)"
 
-patch-release: commit-patch
+patch-release: commit-patch update
 
 # --> minor
 
@@ -118,7 +118,7 @@ commit-minor: bump-minor
 	@git push origin "v$(version)"
 	@echo "$(green-bold)Published Tag$(reset): $(version)"
 
-minor-release: commit-minor
+minor-release: commit-minor update
 
 # --> major
 
@@ -139,4 +139,4 @@ commit-major: bump-major
 	@git push origin "v$(version)"
 	@echo "$(green-bold)Published Tag$(reset): $(version)"
 
-major-release: commit-major
+major-release: commit-major update
