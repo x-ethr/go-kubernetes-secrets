@@ -104,6 +104,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/x-ethr/go-kubernetes-secrets"
 )
@@ -116,19 +117,20 @@ func main() {
 		panic(e)
 	}
 
-	for secret := range instance {
-		keys := instance[secret]
-		for key := range keys {
-			_ = keys[key] // --> secret key's value
+	for secret, keys := range instance {
+		for key, value := range keys {
+			fmt.Println("Secret", secret, "Key", key, "Value", value)
 		}
 	}
 
 	service := instance["service"]
 
-	_ = service["port"]
-	_ = service["hostname"]
-	_ = service["username"]
-	_ = service["password"]
+	port := service["port"]
+	hostname := service["hostname"]
+	username := service["username"]
+	password := service["password"]
+
+	fmt.Println("Port", port, "Hostname", hostname, "Username", username, "Password", password)
 }
 
 ```
