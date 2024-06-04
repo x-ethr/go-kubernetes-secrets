@@ -33,14 +33,10 @@ spec:
     selector:
         matchLabels:
             app: test-secrets
-            version: v1
-            service: test-secrets
     template:
         metadata:
             labels:
                 app: test-secrets
-                version: v1
-                service: test-secrets
         spec:
             volumes:
                 -   name: secret-volume
