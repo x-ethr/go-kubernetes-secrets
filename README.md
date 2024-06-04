@@ -85,7 +85,7 @@ organizing the secret-to-key value(s):
 
 ## Documentation
 
-Official `godoc` documentation (with examples) can be found at the [Package Registry](https://pkg.go.dev/github.com/x-ethr/color).
+Official `godoc` documentation (with examples) can be found at the [Package Registry](https://pkg.go.dev/github.com/x-ethr/go-kubernetes-secrets).
 
 ## Usage
 
