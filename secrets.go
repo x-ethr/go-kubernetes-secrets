@@ -27,6 +27,9 @@ func (v Value) Bytes() []byte {
 // Secrets represents a map[string]map[string][]byte mapping of [Secret] -> [Key] -> [Value].
 type Secrets map[Secret]map[Key]Value
 
+// Walk recursively traverses the specified directory and its subdirectories.
+// It collects file paths, directory names, and file contents to build a Secrets map; ignores hidden files and directories that start with a dot.
+//   - Returns an error if any occurred during the traversal.
 func (s Secrets) Walk(ctx context.Context, directory string) error {
 	e := filepath.WalkDir(directory, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -67,6 +70,9 @@ func (s Secrets) Walk(ctx context.Context, directory string) error {
 	return nil
 }
 
+// FS walks the specified file system and populates the Secrets map.
+// It ignores hidden files and directories that start with a dot.
+// - Returns an error if any occurred during the file system walk.
 func (s Secrets) FS(ctx context.Context, filesystem fs.FS) error {
 	e := fs.WalkDir(filesystem, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -107,12 +113,25 @@ func (s Secrets) FS(ctx context.Context, filesystem fs.FS) error {
 	return nil
 }
 
+// New returns a new instance of the Secrets type.
+// It initializes a Secrets map with an empty map for each secret.
 func New() Secrets {
 	return make(Secrets)
 }
 
+// Walk takes a context and a directory path, and returns a Secrets map and an error.
+// It creates a new instance of the Secrets type, then calls the Walk method of that instance with the given context and directory.
+// It returns the updated instance and any error that occurred during the Walk operation.
 func Walk(ctx context.Context, directory string) (Secrets, error) {
 	instance := New()
 	e := instance.Walk(ctx, directory)
+	return instance, e
+}
+
+// FS creates a new instance of Secrets and populates it by walking the provided file system using the given context.
+// It returns the populated Secrets and any error encountered during the file system walk.
+func FS(ctx context.Context, filesystem fs.FS) (Secrets, error) {
+	instance := New()
+	e := instance.FS(ctx, filesystem)
 	return instance, e
 }
