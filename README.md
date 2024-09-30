@@ -61,8 +61,8 @@ The secret will be mounted `/etc/secrets`:
 .
 └── ethr
     ├── host        -> ..data/host
-    ├── port        -> ..data/host
-    ├── username    -> ..data/host
+    ├── port        -> ..data/port
+    ├── username    -> ..data/username
     └── password    -> ..data/password
 ```
 
